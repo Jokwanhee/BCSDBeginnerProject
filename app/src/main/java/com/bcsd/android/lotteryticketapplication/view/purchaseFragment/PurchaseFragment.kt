@@ -38,28 +38,47 @@ class PurchaseFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var randnumber = arrayListOf<Int>()
+        var randnumber = String()
+        var myrandnumberlist = mutableListOf<MutableList<String>>()
+        var count = 0
 
         val myLotteryNumbersObserver = Observer<String>{
-            binding.text1.text = it.toString()
+            binding.text1.text = it
+            randnumber = it
+            if (!it.isEmpty()){
+                val a_list = it.split(" ") as MutableList<String>
+                a_list.removeAt(a_list.size - 1)
+
+                while (count != a_list.size){
+                    count += 1
+                    if ((count + 1) % 6 == 0){
+                        val b_list = a_list.slice((count-5)..count) as MutableList<String>
+                        myrandnumberlist.add(b_list)
+                    }
+                }
+                for (i in 0..myrandnumberlist.size-1){
+                    val comparator : Comparator<String> = compareBy { it.toInt() }
+                    myrandnumberlist[i].sortWith(comparator)
+                }
+            }
+            binding.text2.text = myrandnumberlist.toString()
         }
         mainViewModel.myLotteryNumbers.observe(viewLifecycleOwner, myLotteryNumbersObserver)
 
         binding.randomButton.setOnClickListener {
-            randnumber.clear()
             for (i in 1..6) {
                 val value = (1..45).random()
-                randnumber.add(value)
+                randnumber += value.toString()
+                randnumber += " "
             }
-            randnumber.sort()
-            mainViewModel.myLotteryNumbers.postValue(randnumber.toString())
+            mainViewModel.myLotteryNumbers.postValue(randnumber)
             updataData(randnumber)
         }
     }
 
-    private fun updataData(rechargeMyLotteryNumbers: ArrayList<Int>) {
+    private fun updataData(rechargeMyLotteryNumbers: String) {
         var map = mutableMapOf<String, Any>()
-        map["userLotteryNumbers"] = rechargeMyLotteryNumbers.toString()
+        map["userLotteryNumbers"] = rechargeMyLotteryNumbers
         databaseReference.child("UserAccount").child(firebaseAuth.currentUser?.uid.toString())
             .updateChildren(map)
             .addOnCompleteListener {
