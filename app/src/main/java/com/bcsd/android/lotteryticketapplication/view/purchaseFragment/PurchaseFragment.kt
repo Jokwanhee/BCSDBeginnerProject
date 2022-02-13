@@ -17,11 +17,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class PurchaseFragment:Fragment() {
-    private lateinit var binding:FragmentPurchaseBinding
+class PurchaseFragment : Fragment() {
+    private lateinit var binding: FragmentPurchaseBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
+    var deductionMoney = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,28 +43,39 @@ class PurchaseFragment:Fragment() {
         var myrandnumberlist = mutableListOf<MutableList<String>>()
         var count = 0
 
-        val myLotteryNumbersObserver = Observer<String>{
+        val myLotteryNumbersObserver = Observer<String> {
             binding.text1.text = it
             randnumber = it
-            if (!it.isEmpty()){
+            if (it.isNotEmpty()) {
                 val a_list = it.split(" ") as MutableList<String>
                 a_list.removeAt(a_list.size - 1)
 
-                while (count != a_list.size){
+                while (count != a_list.size) {
                     count += 1
-                    if ((count + 1) % 6 == 0){
-                        val b_list = a_list.slice((count-5)..count) as MutableList<String>
+                    if ((count + 1) % 6 == 0) {
+                        val b_list = a_list.slice((count - 5)..count) as MutableList<String>
                         myrandnumberlist.add(b_list)
                     }
                 }
-                for (i in 0..myrandnumberlist.size-1){
-                    val comparator : Comparator<String> = compareBy { it.toInt() }
+                for (i in 0..myrandnumberlist.size - 1) {
+                    val comparator: Comparator<String> = compareBy { it.toInt() }
                     myrandnumberlist[i].sortWith(comparator)
                 }
             }
             binding.text2.text = myrandnumberlist.toString()
+            mainViewModel.updateMyLotteryNumbers(myrandnumberlist)
         }
         mainViewModel.myLotteryNumbers.observe(viewLifecycleOwner, myLotteryNumbersObserver)
+
+        val myLotteryNumbersListObserver = Observer<MutableList<MutableList<String>>> {
+            binding.text3.text = it.toString()
+        }
+        mainViewModel.myLotteryNumbersList.observe(viewLifecycleOwner, myLotteryNumbersListObserver)
+
+        val moneyObserver = Observer<Int>{
+            deductionMoney = it
+        }
+        mainViewModel.money.observe(viewLifecycleOwner, moneyObserver)
 
         binding.randomButton.setOnClickListener {
             for (i in 1..6) {
@@ -71,20 +83,12 @@ class PurchaseFragment:Fragment() {
                 randnumber += value.toString()
                 randnumber += " "
             }
-            mainViewModel.myLotteryNumbers.postValue(randnumber)
-            updataData(randnumber)
-        }
-    }
 
-    private fun updataData(rechargeMyLotteryNumbers: String) {
-        var map = mutableMapOf<String, Any>()
-        map["userLotteryNumbers"] = rechargeMyLotteryNumbers
-        databaseReference.child("UserAccount").child(firebaseAuth.currentUser?.uid.toString())
-            .updateChildren(map)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Toast.makeText(context, "데이터 업데이트 성공", Toast.LENGTH_SHORT).show()
-                }
-            }
+            deductionMoney = deductionMoney - 5000
+
+            mainViewModel.myLotteryNumbers.postValue(randnumber)
+            mainViewModel.updateData("userLotteryNumbers", randnumber, view.context)
+            mainViewModel.updateData("money", deductionMoney, view.context)
+        }
     }
 }

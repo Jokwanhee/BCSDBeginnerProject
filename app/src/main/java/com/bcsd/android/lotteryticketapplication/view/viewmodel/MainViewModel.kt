@@ -1,5 +1,7 @@
 package com.bcsd.android.lotteryticketapplication.view.viewmodel
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bcsd.android.lotteryticketapplication.view.model.LotteryNumber
@@ -19,14 +21,16 @@ class MainViewModel : ViewModel() {
     val name = MutableLiveData<String>()
     val money = MutableLiveData<Int>()
     val myLotteryNumbers = MutableLiveData<String>()
+    val myLotteryNumbersList = MutableLiveData<MutableList<MutableList<String>>>()
     val lotteryNumbers = MutableLiveData<ArrayList<Int>>()
     val date = MutableLiveData<String>()
+    val isRunning = MutableLiveData<ArrayList<Boolean>>()
 //    val lotteryNumber: MutableLiveData<ArrayList<Int>> by lazy {
 //        MutableLiveData()
 //    }
 
-    val isRunning = MutableLiveData<ArrayList<Boolean>>()
     val lotteryItems = ArrayList<Int>()
+    val myLotteryItems = mutableListOf<MutableList<String>>()
     val isRunningItems: ArrayList<Boolean> = arrayListOf(false, false)
 
     fun updateLottoNumbers(lotteryList: ArrayList<Int>) { // 로또 당첨 번호 업데이트 함수
@@ -36,11 +40,29 @@ class MainViewModel : ViewModel() {
         lotteryNumbers.postValue(lotteryItems)
     }
 
+    fun updateMyLotteryNumbers(myLotteryList: MutableList<MutableList<String>>){
+        myLotteryItems.clear()
+        myLotteryItems.addAll(myLotteryList)
+        myLotteryNumbersList.postValue(myLotteryList)
+    }
+
     fun updateIsRunning(index: Int, value: Boolean) { // 서버와 리얼타임데이터베이스 호출 완료 시 값 변경 함수
         isRunningItems.set(index, value)
         isRunning.postValue(isRunningItems)
     }
 
+    fun updateData(key:String, value:Any, context:Context){ // 데이터베이스 값 변경 업데이트
+        val firebaseAuth = FirebaseAuth.getInstance()
+        var map = mutableMapOf<String,Any>()
+        map[key] = value
+        databaseReference.child("UserAccount").child(firebaseAuth.currentUser?.uid.toString())
+            .updateChildren(map)
+            .addOnCompleteListener {
+                if (it.isSuccessful){
+                    Toast.makeText(context, "데이터 업데이트 성공", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
 
     fun createRealtimeDatabase() { // 파이어베이스 리얼타임데이터베이스 연동
         databaseReference = FirebaseDatabase.getInstance().getReference("User")
