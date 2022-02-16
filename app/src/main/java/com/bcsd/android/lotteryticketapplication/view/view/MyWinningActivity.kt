@@ -21,18 +21,28 @@ class MyWinningActivity : AppCompatActivity() {
         val winningDate = intent.getStringExtra("winningDate")
         val myLotteryNumbers = intent.getStringExtra("myLotteryNumbers")
 
+        var myrandnumberlist = createMyLotteryNumbers(myLotteryNumbers.toString())
+        createAdapter(myrandnumberlist)
+        clickView(winningNumbers as ArrayList<Int>)
+
+        binding.textDate.text = winningDate
+        binding.textLotteryNumbers.text = winningNumbers.toString()
+
+    }
+
+    private fun createMyLotteryNumbers(myLotteryNumbers:String) :MutableList<MutableList<String>> {
         var myrandnumberlist = mutableListOf<MutableList<String>>()
         var count = 0
 
         if (myLotteryNumbers?.isNotEmpty() == true) {
-            val a_list = myLotteryNumbers.split(" ") as MutableList<String>
-            a_list.removeAt(a_list.size - 1)
+            val allList = myLotteryNumbers.split(" ") as MutableList<String>
+            allList.removeAt(allList.size - 1)
 
-            while (count != a_list.size) {
+            while (count != allList.size) {
                 count += 1
                 if ((count + 1) % 6 == 0) {
-                    val b_list = a_list.slice((count - 5)..count) as MutableList<String>
-                    myrandnumberlist.add(b_list)
+                    val innerList = allList.slice((count - 5)..count) as MutableList<String>
+                    myrandnumberlist.add(innerList)
                 }
             }
             for (i in 0..myrandnumberlist.size - 1) {
@@ -40,12 +50,7 @@ class MyWinningActivity : AppCompatActivity() {
                 myrandnumberlist[i].sortWith(comparator)
             }
         }
-
-        createAdapter(myrandnumberlist)
-        clickView()
-
-        binding.textDate.text = winningDate
-        binding.textLotteryNumbers.text = winningNumbers.toString()
+        return myrandnumberlist
     }
 
     private fun createAdapter(myrandnumberlist:MutableList<MutableList<String>>){
@@ -54,10 +59,24 @@ class MyWinningActivity : AppCompatActivity() {
         binding.myWinningRecyclerView.layoutManager = GridLayoutManager(this,3)
     }
 
-    private fun clickView(){
+    private fun clickView(winningNumbers:ArrayList<Int>){
         adapter.setItemClickListener(object : MyWinningAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int, myLotterys: String) {
-                binding.textMyLotteryNumbers.text = myLotterys
+            override fun onClick(v: View, position: Int, lottery: MutableList<String>) {
+                binding.textMyLotteryNumbers.text = lottery.toString()
+                var viewLotteryNumbers = arrayListOf<Int>()
+                var samelist = arrayListOf<Int>()
+
+                lottery.forEach {
+                    viewLotteryNumbers.add(it.toInt())
+                }
+
+                viewLotteryNumbers.forEach {
+                    if (it in winningNumbers!!){
+                        samelist.add(it)
+                    }
+                }
+                binding.textSameNumberList.text = samelist.toString()
+                binding.textSameNumber.text = samelist.size.toString()
             }
         })
     }

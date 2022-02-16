@@ -40,7 +40,7 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeData()
+        updateObserveData()
 
         binding.rechargeButton.setOnClickListener {
             rechargeMoney += 5000
@@ -64,6 +64,8 @@ class MyPageFragment : Fragment() {
         }
 
         binding.deleteAccountButton.setOnClickListener {
+            databaseReference = FirebaseDatabase.getInstance().getReference("User")
+            databaseReference.child("UserAccount").child(firebaseAuth.currentUser?.uid.toString()).setValue(null)
             firebaseAuth.currentUser?.delete()
             firebaseAuth.signOut()
             val intent = Intent(context, SignInActivity::class.java)
@@ -83,7 +85,7 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    private fun observeData(){
+    private fun updateObserveData(){
         val emailObserver = Observer<String> {
             binding.text1.text = it.toString()
         }

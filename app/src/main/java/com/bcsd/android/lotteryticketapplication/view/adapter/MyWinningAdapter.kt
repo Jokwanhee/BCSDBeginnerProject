@@ -18,7 +18,7 @@ class MyWinningAdapter(
     }
 
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int, text: String)
+        fun onClick(v: View, position: Int, lottery:MutableList<String>)
     }
 
     private lateinit var itemClickListener: OnItemClickListener
@@ -36,7 +36,7 @@ class MyWinningAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
         holder.itemView.setOnClickListener {
-            itemClickListener.onClick(it, position, myLotteryList[position].toString())
+            itemClickListener.onClick(it, position, myLotteryList[position])
         }
     }
 
