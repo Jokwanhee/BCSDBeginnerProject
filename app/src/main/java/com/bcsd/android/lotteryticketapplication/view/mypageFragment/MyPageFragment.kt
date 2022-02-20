@@ -46,7 +46,7 @@ class MyPageFragment : Fragment() {
         updateObserveData()
 
         // 예치금 충전 버튼 클릭 시 이벤트
-        binding.rechargeButton.setOnClickListener {
+        binding.rechargeMoney.setOnClickListener {
             // 클릭 시 추가 돈 5000원
             rechargeMoney += 5000
             // viewModel 변경 된 money 값 저장
@@ -56,7 +56,7 @@ class MyPageFragment : Fragment() {
         }
 
         // 나의 당첨 내역 확인 버튼 클릭 시 이벤트 (마이페이지 -> 나의 당첨 내역 확인 액티비티)
-        binding.winningNumberButton.setOnClickListener {
+        binding.checkWinning.setOnClickListener {
             val intent = Intent(context, MyWinningActivity::class.java)
             // 값 이동 : 당첨 번호, 당첨 날짜, 나의 당첨 번호
             intent.putExtra("winningNumbers",winningNumbers)
@@ -106,30 +106,25 @@ class MyPageFragment : Fragment() {
     // viewModel 관찰(observer) 하는 함수
     private fun updateObserveData(){
         val emailObserver = Observer<String> {
-            binding.text1.text = it.toString()
+            binding.pvtEmail.text = it.toString()
         }
         val nameObserver = Observer<String> {
-            binding.text2.text = it.toString()
+            binding.pvtName.text = it.toString()
         }
         val moneyObserver = Observer<Int> {
-            binding.text3.text = it.toString()
+            binding.pvtMoney.text = it.toString()
             // 유저의 돈 변동을 위해서 계속 관찰 (돈 충전 관련), rechargeMoney 변수로 사용
             rechargeMoney = it
         }
-        val lottoNumbersObserver = Observer<ArrayList<Int>>{
-            binding.text4.text= it.toString()
+        val lotteryNumbersObserver = Observer<ArrayList<Int>>{
             // 당첨 번호를 저장한 데이터를 불러와 관찰, winningNumbers 변수로 사용
             winningNumbers = it
-        }
-        val dateObserver = Observer<String>{
-            binding.text5.text = it.toString()
         }
 
         mainViewModel.email.observe(viewLifecycleOwner, emailObserver)
         mainViewModel.name.observe(viewLifecycleOwner, nameObserver)
         mainViewModel.money.observe(viewLifecycleOwner, moneyObserver)
-        mainViewModel.lotteryNumbers.observe(viewLifecycleOwner, lottoNumbersObserver)
-        mainViewModel.date.observe(viewLifecycleOwner, dateObserver)
+        mainViewModel.lotteryNumbers.observe(viewLifecycleOwner, lotteryNumbersObserver)
     }
 
 }

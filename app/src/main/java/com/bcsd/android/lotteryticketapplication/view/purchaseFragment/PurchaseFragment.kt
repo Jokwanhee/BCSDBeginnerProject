@@ -122,7 +122,6 @@ class PurchaseFragment : Fragment() {
     // 나의 로또 번호 문자열에서 리스트로 변환 함수
     private fun createMyLotteryNumbers() {
         val myLotteryNumbersObserver = Observer<String> {
-            Log.d("testing", "number ${it}")
             binding.text1.text = it
             // 나의 로또 번호 문자열 저장
             str_userLotteryNumbers = it
@@ -145,9 +144,7 @@ class PurchaseFragment : Fragment() {
                     count += 1 // count 1씩 증가
                     if ((count + 1) % 7 == 0) { // count(6,13...) + 1 => 7의 배수일 때
                         // int_list에 있는 여러 개의 값을 0~6 (7개 씩) 슬라이스
-                        Log.d("testing","count ${count}")
                         val innerList = int_list.slice((count - 6)..count)
-                        Log.d("testing","innerlist ${innerList}")
                         // 2차원 리스트에 나의 로또 번호 7개를 담은 리스트 저장
                         myrandnumberlist.add(innerList as MutableList<Int>)
                     }
@@ -168,7 +165,6 @@ class PurchaseFragment : Fragment() {
         // 회원 로또 번호 관찰(observe)
         val myLotteryNumbersListObserver = Observer<MutableList<MutableList<Int>>> {
             binding.text3.text = it.toString()
-            Log.d("testing", "number list ${it}")
         }
         // 회원 돈 관찰(observe)
         val moneyObserver = Observer<Int> {
