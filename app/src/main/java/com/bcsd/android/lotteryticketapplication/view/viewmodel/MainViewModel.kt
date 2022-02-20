@@ -45,13 +45,15 @@ class MainViewModel : ViewModel() {
         lotteryNumbers.postValue(lotteryItems)
     }
 
+    // 회원 별 로또 번호 업데이트 함수
     fun updateMyLotteryNumbers(myLotteryList: MutableList<MutableList<Int>>) {
         myLotteryItems.clear()
         myLotteryItems.addAll(myLotteryList)
-        myLotteryNumbersList.postValue(myLotteryList)
+        myLotteryNumbersList.postValue(myLotteryItems)
     }
 
-    fun updateIsRunning(index: Int, value: Boolean) { // 서버와 리얼타임데이터베이스 호출 완료 시 값 변경 함수
+    // 서버와 리얼타임데이터베이스 호출 완료 시 값 변경 함수
+    fun updateIsRunning(index: Int, value: Boolean) {
         isRunningItems.set(index, value)
         isRunning.postValue(isRunningItems)
     }
@@ -72,7 +74,8 @@ class MainViewModel : ViewModel() {
             }
     }
 
-    fun createRealtimeDatabase() { // 파이어베이스 리얼타임데이터베이스 연동
+    // 파이어베이스 리얼타임데이터베이스 연동
+    fun createRealtimeDatabase() {
         // databaseReference -> User 경로 참조
         databaseReference = FirebaseDatabase.getInstance().getReference("User")
         databaseReference.addValueEventListener(object : ValueEventListener {
@@ -103,7 +106,8 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun createRetrofit() { // Retrofit2 http 통신
+    // Retrofit2 http 통신
+    fun createRetrofit() {
         service.getLotteryNumber().enqueue(object : Callback<LotteryNumber> {
             override fun onResponse(call: Call<LotteryNumber>, response: Response<LotteryNumber>) {
                 if (response.isSuccessful) { // 통신 성공 시

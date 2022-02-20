@@ -1,6 +1,7 @@
 package com.bcsd.android.lotteryticketapplication.view.view.purchaseFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,10 @@ class PurchaseFragment : Fragment() {
 
     var deductionMoney = 0 // 로또 구매 시 회원 돈 절감
     var str_userLotteryNumbers = String() // 회원 로또 번호 저장 문자열
+    // 로또 번호 개수를 7개까지이므로 제한 할 카운트 변수
+    var count = 0
+    // 나의 로또 번호를 담을 변경 가능 한 리스트(정수형)
+    var myrandnumberlist = mutableListOf<MutableList<Int>>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +48,19 @@ class PurchaseFragment : Fragment() {
 
         createMyLotteryNumbers()
         updateObserveData()
+
+        // 회원의 로또 번호 전체 삭제 버튼 클릭 시 이벤트
+        binding.deleteButton.setOnClickListener {
+            // 7개 숫자를 받아올 count 초기화
+            // 회원 로또 번호를 받아오는 문자열 str_userLotteryNumbers 초기화
+            // 회원 로또 번호를 2차원 리스트로 만드는 myrandnumberlist 초기화
+            count = 0
+            str_userLotteryNumbers = ""
+            myrandnumberlist.clear()
+
+            // firebase database 회원의 로또 번호 초기화
+            mainViewModel.updateData("userLotteryNumbers", "", view.context)
+        }
 
         // 로또 번호 구매 랜덤 버튼 클릭 시 이벤트
         binding.randomButton.setOnClickListener {
@@ -103,12 +121,8 @@ class PurchaseFragment : Fragment() {
 
     // 나의 로또 번호 문자열에서 리스트로 변환 함수
     private fun createMyLotteryNumbers() {
-        // 나의 로또 번호를 담을 변경 가능 한 리스트(정수형)
-        var myrandnumberlist = mutableListOf<MutableList<Int>>()
-        // 로또 번호 개수를 7개까지이므로 제한 할 카운트 변수
-        var count = 0
-
         val myLotteryNumbersObserver = Observer<String> {
+            Log.d("testing", "number ${it}")
             binding.text1.text = it
             // 나의 로또 번호 문자열 저장
             str_userLotteryNumbers = it
@@ -131,7 +145,9 @@ class PurchaseFragment : Fragment() {
                     count += 1 // count 1씩 증가
                     if ((count + 1) % 7 == 0) { // count(6,13...) + 1 => 7의 배수일 때
                         // int_list에 있는 여러 개의 값을 0~6 (7개 씩) 슬라이스
+                        Log.d("testing","count ${count}")
                         val innerList = int_list.slice((count - 6)..count)
+                        Log.d("testing","innerlist ${innerList}")
                         // 2차원 리스트에 나의 로또 번호 7개를 담은 리스트 저장
                         myrandnumberlist.add(innerList as MutableList<Int>)
                     }
@@ -141,7 +157,6 @@ class PurchaseFragment : Fragment() {
                     myrandnumberlist[i].sort()
                 }
             }
-            binding.text2.text = myrandnumberlist.toString()
             // 나의 로또 번호 2차원 리스트 업데이트
             mainViewModel.updateMyLotteryNumbers(myrandnumberlist)
         }
@@ -153,6 +168,7 @@ class PurchaseFragment : Fragment() {
         // 회원 로또 번호 관찰(observe)
         val myLotteryNumbersListObserver = Observer<MutableList<MutableList<Int>>> {
             binding.text3.text = it.toString()
+            Log.d("testing", "number list ${it}")
         }
         // 회원 돈 관찰(observe)
         val moneyObserver = Observer<Int> {
