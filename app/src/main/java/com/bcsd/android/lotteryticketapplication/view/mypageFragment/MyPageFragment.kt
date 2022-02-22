@@ -59,9 +59,9 @@ class MyPageFragment : Fragment() {
         binding.checkWinning.setOnClickListener {
             val intent = Intent(context, MyWinningActivity::class.java)
             // 값 이동 : 당첨 번호, 당첨 날짜, 나의 당첨 번호
-            intent.putExtra("winningNumbers",winningNumbers)
-            intent.putExtra("winningDate",mainViewModel.date.value)
-            intent.putExtra("myLotteryNumbers",mainViewModel.myLotteryNumbers.value)
+            intent.putExtra("winningNumbers", winningNumbers)
+            intent.putExtra("winningDate", mainViewModel.date.value)
+            intent.putExtra("myLotteryNumbers", mainViewModel.myLotteryNumbers.value)
             startActivity(intent)
         }
 
@@ -77,7 +77,8 @@ class MyPageFragment : Fragment() {
         binding.deleteAccountButton.setOnClickListener {
             // 해당 회원의 정보를 담는 database 삭제
             databaseReference = FirebaseDatabase.getInstance().getReference("User")
-            databaseReference.child("UserAccount").child(firebaseAuth.currentUser?.uid.toString()).setValue(null)
+            databaseReference.child("UserAccount").child(firebaseAuth.currentUser?.uid.toString())
+                .setValue(null)
             // 해당 회원의 Authentication 삭제
             firebaseAuth.currentUser?.delete()
             firebaseAuth.signOut()
@@ -87,8 +88,8 @@ class MyPageFragment : Fragment() {
         }
 
         // 호출 중인 데이터 관찰(observe)
-        val isRunningObserver = Observer<ArrayList<Boolean>>{
-            if (false !in it){
+        val isRunningObserver = Observer<ArrayList<Boolean>> {
+            if (false !in it) {
                 // 호출 한 데이터가 정상일 때 (즉, false가 없을 때) isRefreshing false
                 binding.swipeRefresh.isRefreshing = false
             }
@@ -104,7 +105,7 @@ class MyPageFragment : Fragment() {
     }
 
     // viewModel 관찰(observer) 하는 함수
-    private fun updateObserveData(){
+    private fun updateObserveData() {
         val emailObserver = Observer<String> {
             binding.pvtEmail.text = it.toString()
         }
@@ -116,7 +117,7 @@ class MyPageFragment : Fragment() {
             // 유저의 돈 변동을 위해서 계속 관찰 (돈 충전 관련), rechargeMoney 변수로 사용
             rechargeMoney = it
         }
-        val lotteryNumbersObserver = Observer<ArrayList<Int>>{
+        val lotteryNumbersObserver = Observer<ArrayList<Int>> {
             // 당첨 번호를 저장한 데이터를 불러와 관찰, winningNumbers 변수로 사용
             winningNumbers = it
         }

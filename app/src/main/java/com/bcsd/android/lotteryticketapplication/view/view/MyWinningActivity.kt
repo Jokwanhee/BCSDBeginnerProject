@@ -11,8 +11,8 @@ import com.bcsd.android.lotteryticketapplication.view.adapter.MyWinningAdapter
 
 // 나의 당첨내역 확인 액티비티
 class MyWinningActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityMyWinningBinding
-    private lateinit var adapter:MyWinningAdapter
+    private lateinit var binding: ActivityMyWinningBinding
+    private lateinit var adapter: MyWinningAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class MyWinningActivity : AppCompatActivity() {
     }
 
     // 나의 로또 번호 문자열을 2차원 리스트로 변경하는 함수
-    private fun createMyLotteryNumbers(myLotteryNumbers:String) :MutableList<MutableList<Int>> {
+    private fun createMyLotteryNumbers(myLotteryNumbers: String): MutableList<MutableList<Int>> {
         // 나의 로또 번호를 담을 변경 가능 한 리스트(정수형)
         var myrandnumberlist = mutableListOf<MutableList<Int>>()
         // 로또 번호 개수를 7개까지이므로 제한 할 카운트 변수
@@ -63,15 +63,15 @@ class MyWinningActivity : AppCompatActivity() {
     }
 
     // 나의 로또 번호 2차원 리스트를 어뎁터를 통해서 리사이클러 뷰에 연결
-    private fun createAdapter(myrandnumberlist:MutableList<MutableList<Int>>){
+    private fun createAdapter(myrandnumberlist: MutableList<MutableList<Int>>) {
         adapter = MyWinningAdapter(myrandnumberlist)
         binding.myWinningRecyclerView.adapter = adapter
-        binding.myWinningRecyclerView.layoutManager = GridLayoutManager(this,3)
+        binding.myWinningRecyclerView.layoutManager = GridLayoutManager(this, 3)
     }
 
     // 회원의 각 로또 번호를 클릭하여 확인할 수 있는 함수
-    private fun clickView(winningNumbers:ArrayList<Int>){
-        adapter.setItemClickListener(object : MyWinningAdapter.OnItemClickListener{
+    private fun clickView(winningNumbers: ArrayList<Int>) {
+        adapter.setItemClickListener(object : MyWinningAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int, lottery: MutableList<Int>) {
                 binding.textMyLotteryNumbers.text = lottery.toString()
                 // 클릭 시 해당 회원의 로또 번호를 저장하는 리스트
@@ -86,7 +86,7 @@ class MyWinningActivity : AppCompatActivity() {
 
                 // 당첨 번호 내에 나의 로또 번호를 저장 리스트와 비교하여 같은면 count_list에 저장
                 viewLotteryNumbers.forEach {
-                    if (it in winningNumbers!!){
+                    if (it in winningNumbers!!) {
                         count_list.add(it)
                     }
                 }

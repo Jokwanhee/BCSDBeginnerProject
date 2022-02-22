@@ -25,8 +25,10 @@ class PurchaseFragment : Fragment() {
 
     var deductionMoney = 0 // 로또 구매 시 회원 돈 절감
     var str_userLotteryNumbers = String() // 회원 로또 번호 저장 문자열
+
     // 로또 번호 개수를 7개까지이므로 제한 할 카운트 변수
     var count = 0
+
     // 나의 로또 번호를 담을 변경 가능 한 리스트(정수형)
     var myrandnumberlist = mutableListOf<MutableList<Int>>()
 

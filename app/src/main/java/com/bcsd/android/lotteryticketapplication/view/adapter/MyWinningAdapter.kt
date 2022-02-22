@@ -13,12 +13,12 @@ class MyWinningAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val myLotteryCount = itemView.findViewById<TextView>(R.id.text_1)
         fun bind(pos: Int) {
-            myLotteryCount.text = (pos+1).toString()
+            myLotteryCount.text = (pos + 1).toString()
         }
     }
 
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int, lottery:MutableList<Int>)
+        fun onClick(v: View, position: Int, lottery: MutableList<Int>)
     }
 
     private lateinit var itemClickListener: OnItemClickListener

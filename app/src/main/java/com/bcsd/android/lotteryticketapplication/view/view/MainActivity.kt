@@ -54,8 +54,8 @@ class MainActivity : AppCompatActivity() {
         createNavigation()
 
         // retrofit2, database 데이터 관찰(observe)
-        val isRunningObserver = Observer<ArrayList<Boolean>>{
-            if (false !in it){ // 두 개 데이터 관찰 중(retrofit2,database) false 가 없을 시 progressbar is gone
+        val isRunningObserver = Observer<ArrayList<Boolean>> {
+            if (false !in it) { // 두 개 데이터 관찰 중(retrofit2,database) false 가 없을 시 progressbar is gone
                 binding.progressBar.visibility = View.GONE
             }
         }
