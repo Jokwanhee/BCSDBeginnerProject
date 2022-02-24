@@ -38,6 +38,7 @@ class MainViewModel : ViewModel() {
     val myLotteryItems = mutableListOf<MutableList<Int>>()
     val isRunningItems: ArrayList<Boolean> = arrayListOf(false, false)
 
+    // 나의 당첨 번호 삭제
     fun deleteMyLotteryNumbers(){
         myLotteryItems.clear()
         myLotteryNumbers.postValue(myLotteryItems)
@@ -58,6 +59,7 @@ class MainViewModel : ViewModel() {
         myLotteryNumbers.postValue(myLotteryItems)
     }
 
+    // 해당날짜의 회원이 구매한 로또를 모두 모아 데이터베이스에 저장
     fun updateCurrentTimeLotteryNumbers(randomNumberStr:String){
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -105,6 +107,7 @@ class MainViewModel : ViewModel() {
             }
     }
 
+    // 7개의 번호를 랜덤으로 생성하는 함수
     fun createRandomNumber():MutableSet<Int>{
         var randomSet = mutableSetOf<Int>()
         while (randomSet.size <= 6) {
@@ -113,6 +116,7 @@ class MainViewModel : ViewModel() {
         return randomSet
     }
 
+    // 문자열을 받아 2차원 리스트로 변경하는 함수
     fun createTwoDimensionalList(number: String): MutableList<MutableList<Int>> {
         var count = 0
         var numberList = mutableListOf<MutableList<Int>>()

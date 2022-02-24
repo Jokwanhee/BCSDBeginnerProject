@@ -46,12 +46,14 @@ class MyPageFragment : Fragment() {
 
         updateObserveData()
 
+        // 예치금 5000원씩 추가
         binding.rechargeMoney.setOnClickListener {
             rechargeMoney += 5000
             mainViewModel.money.postValue(rechargeMoney)
             mainViewModel.updateData("money", rechargeMoney, requireContext())
         }
 
+        // 나의 당첨 내역확인 화면으로 이동
         binding.checkWinning.setOnClickListener {
             val intent = Intent(context, MyWinningActivity::class.java)
             intent.putExtra("winningNumbers", winningNumbers)
@@ -60,13 +62,15 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 로그아웃
         binding.signOutButton.setOnClickListener {
             firebaseAuth.signOut()
             val intent = Intent(context, SignInActivity::class.java)
             startActivity(intent)
-            activity?.finish() // 해당 프래그먼트를 담고 있는 액티비티 종료
+            activity?.finish()
         }
 
+        // 회원탈퇴
         binding.deleteAccountButton.setOnClickListener {
             // 해당 회원의 정보를 담는 database 삭제
             databaseReference = FirebaseDatabase.getInstance().getReference("User")
@@ -80,6 +84,7 @@ class MyPageFragment : Fragment() {
             activity?.finish()
         }
 
+        // 해당 화면 새로고침
         val isRunningObserver = Observer<ArrayList<Boolean>> {
             if (false !in it) {
                 binding.swipeRefresh.isRefreshing = false

@@ -16,6 +16,7 @@ class HomeScreenViewModel : ViewModel() {
 
     var pastWinningItems = mutableListOf<Int>()
 
+    // 데이터베이스에 저장 된 현재 날짜의 모든 회원들의 로또 번호를 불러오는 함수
     fun setCurrentUserLotteryNumbers(date: String) {
         databaseReference = FirebaseDatabase.getInstance().getReference("User")
         databaseReference.addValueEventListener(object : ValueEventListener {
@@ -31,12 +32,14 @@ class HomeScreenViewModel : ViewModel() {
         })
     }
 
+    // 과거 당첨 번호를 업데이트하는 함수
     fun updatePastWinningNumbers(pastlist: MutableList<Int>) {
         pastWinningItems.clear()
         pastWinningItems.addAll(pastlist)
         pastWinningNumbers.postValue(pastWinningItems)
     }
 
+    // 과거 로또 번호가 존재하는 지 확인하는 함수
     fun findPastLotteryNumbers(editTextDate: String, context: Context?) {
         databaseReference = FirebaseDatabase.getInstance().getReference("User")
         if (editTextDate == "") {
@@ -68,6 +71,7 @@ class HomeScreenViewModel : ViewModel() {
         }
     }
 
+    // 문자열을 리스트로 변환하는 함수
     fun createStringToList(it:String) : MutableList<Int>{
         var listInt = mutableListOf<Int>()
         val listStr = it.split(" ") as MutableList<String>

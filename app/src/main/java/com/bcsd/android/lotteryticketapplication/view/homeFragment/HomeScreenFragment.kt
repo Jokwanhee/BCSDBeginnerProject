@@ -1,6 +1,7 @@
 package com.bcsd.android.lotteryticketapplication.view.view.homeFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -118,17 +119,13 @@ class HomeScreenFragment : Fragment() {
             adapter.setItemClickListener(object : HomeScreenAdapter.OnItemClickListener {
                 override fun onClick(v: View, position: Int, lottery: MutableList<Int>) {
                     var count = 0
-                    val pastNumbersObserver = Observer<MutableList<Int>> {
-                        count = 0
-                        lottery.forEach { number ->
-                            if (number in it) {
-                                count++
-                            }
+                    val pastWinningNumbers = homeScreenViewModel.pastWinningNumbers.value!!
+                    lottery.forEach { number ->
+                        if (number in pastWinningNumbers) {
+                            count++
                         }
                     }
                     Toast.makeText(context, "$count 개 일치!", Toast.LENGTH_SHORT).show()
-                    homeScreenViewModel.pastWinningNumbers.observe(viewLifecycleOwner, pastNumbersObserver)
-
                 }
             })
         }
@@ -153,7 +150,7 @@ class HomeScreenFragment : Fragment() {
         )
     }
 
-    // 현재 날짜 n자리 일치 확인 함수
+    // 오늘의 번호와 오늘의 회원 번호를 비교하여 n자리 수를 확인하는 함수
     private fun checkWinningRanking(
         allUserList: MutableList<MutableList<Int>>,
         winningNumber: ArrayList<Int>

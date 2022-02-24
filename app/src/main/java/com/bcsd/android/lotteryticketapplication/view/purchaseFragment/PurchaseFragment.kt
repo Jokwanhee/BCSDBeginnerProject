@@ -43,12 +43,14 @@ class PurchaseFragment : Fragment() {
 
         updateObserverData()
 
+        // 삭제버튼 클릭 시 현재 가지고 있는 나의 로또 번호 전체 삭제
         binding.deleteButton.setOnClickListener {
             mainViewModel.myLotteryNumbersStr.postValue("")
             mainViewModel.deleteMyLotteryNumbers()
             mainViewModel.updateData("userLotteryNumbers", "", requireContext())
         }
 
+        // 랜덤버튼 클릭 시 0~45의 숫자 중에서 7가지의 서로 다른 번호를 얻는다.
         binding.randomButton.setOnClickListener {
             if (varMoney <= 0) {
                 Toast.makeText(context, "No Money!", Toast.LENGTH_SHORT).show()
@@ -75,6 +77,7 @@ class PurchaseFragment : Fragment() {
         }
     }
 
+    // LiveData 변경되는 값을 확인하여 사용 할 변수에 저장하는 함수
     private fun updateObserverData() {
         val moneyObserver = Observer<Int> {
             varMoney = it
@@ -86,6 +89,7 @@ class PurchaseFragment : Fragment() {
         mainViewModel.myLotteryNumbersStr.observe(viewLifecycleOwner, myLotteryNumbersStrObserver)
     }
 
+    // 나의 로또 번호 생성 함수
     private fun createMyLotteryNumbers(it: String) {
         binding.text1.text = it
         val myLotteryNumbers = mainViewModel.createTwoDimensionalList(it)
