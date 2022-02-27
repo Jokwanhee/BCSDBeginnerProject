@@ -93,7 +93,7 @@ class MainViewModel : ViewModel() {
 
     // 데이터베이스 값 변경 업데이트 함수
     // 매개변수 : 경로 이름, 변경 할 값(타입 : Any), 사용하는 view context
-    fun updateData(key: String, value: Any, context: Context) {
+    fun updateData(key: String, value: Any, context: Context?) {
         val firebaseAuth = FirebaseAuth.getInstance()
         // map 사용 -> {"1":"1","2":2...}
         var map = mutableMapOf<String, Any>()

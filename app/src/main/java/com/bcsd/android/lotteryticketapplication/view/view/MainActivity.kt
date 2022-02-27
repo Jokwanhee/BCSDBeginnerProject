@@ -55,19 +55,19 @@ class MainActivity : AppCompatActivity() {
         val navigation = binding.mainNavigation
         navigation.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home_navigation -> {
+                R.id.menu_home_screen -> {
                     manager
                         .beginTransaction()
                         .replace(R.id.main_frame, homeScreenFragment)
                         .commit()
                 }
-                R.id.purchase_navigation -> {
+                R.id.menu_buy_lottery_ticket -> {
                     manager
                         .beginTransaction()
                         .replace(R.id.main_frame, purchaseFragment)
                         .commit()
                 }
-                R.id.my_page_navigation -> {
+                R.id.menu_user_screen -> {
                     manager
                         .beginTransaction()
                         .replace(R.id.main_frame, myPageFragment)

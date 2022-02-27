@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/lightYellow"
         tools:context=".view.MainActivity">
 
         <TextView
@@ -262,11 +262,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/gidetext" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/past_visible_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/screen_btin_custom_disgin"
+            android:shadowRadius="4"
             android:text="지난 당첨 번호 확인하기"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text" />

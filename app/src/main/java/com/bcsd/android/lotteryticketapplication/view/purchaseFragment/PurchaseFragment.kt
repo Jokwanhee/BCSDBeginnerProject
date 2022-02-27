@@ -47,7 +47,7 @@ class PurchaseFragment : Fragment() {
         binding.deleteButton.setOnClickListener {
             mainViewModel.myLotteryNumbersStr.postValue("")
             mainViewModel.deleteMyLotteryNumbers()
-            mainViewModel.updateData("userLotteryNumbers", "", requireContext())
+            mainViewModel.updateData("userLotteryNumbers", "", context)
         }
 
         // 랜덤버튼 클릭 시 0~45의 숫자 중에서 7가지의 서로 다른 번호를 얻는다.
@@ -57,7 +57,7 @@ class PurchaseFragment : Fragment() {
             } else {
                 varMoney -= 5000
                 mainViewModel.money.postValue(varMoney)
-                mainViewModel.updateData("money", varMoney, view.context)
+                mainViewModel.updateData("money", varMoney, context)
 
                 var oneNumberStr = String()
                 var myRandomNumber = mainViewModel.createRandomNumber()

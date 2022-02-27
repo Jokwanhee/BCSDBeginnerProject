@@ -83,7 +83,7 @@ class HomeScreenFragment : Fragment() {
     private fun getPastWinningNumber() {
         binding.pastVisibleButton.setOnClickListener {
             var editTextDate = binding.editText.text.toString()
-            homeScreenViewModel.findPastLotteryNumbers(editTextDate, requireContext())
+            homeScreenViewModel.findPastLotteryNumbers(editTextDate, activity)
             val pastDateObserver = Observer<String> {
                 binding.pastDate.text = it
             }
