@@ -91,7 +91,6 @@ class PurchaseFragment : Fragment() {
 
     // 나의 로또 번호 생성 함수
     private fun createMyLotteryNumbers(it: String) {
-        binding.text1.text = it
         val myLotteryNumbers = mainViewModel.createTwoDimensionalList(it)
         mainViewModel.updateMyLotteryNumbers(myLotteryNumbers)
     }

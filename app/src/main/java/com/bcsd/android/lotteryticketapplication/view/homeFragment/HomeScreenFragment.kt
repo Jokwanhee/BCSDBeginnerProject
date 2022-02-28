@@ -138,6 +138,7 @@ class HomeScreenFragment : Fragment() {
     // 모든 회원들의 로또 번호
     private fun getAllCurrentUserNumber() {
         val allUserNumberObserver = Observer<String> {
+            Log.d("testing","all : $it")
             var allusernumberlist = mainViewModel.createTwoDimensionalList(it)
             val winningNumbers = Observer<ArrayList<Int>> {
                 checkWinningRanking(allusernumberlist, it)
@@ -173,18 +174,14 @@ class HomeScreenFragment : Fragment() {
                 7 -> winnerhistory[7] += 1
             }
         }
-        winnerhistory.forEach {
-            var _index = winnerhistory.indexOf(it)
-            when (_index) {
-                0 -> binding.currentNum0.text = it.toString()
-                1 -> binding.currentNum1.text = it.toString()
-                2 -> binding.currentNum2.text = it.toString()
-                3 -> binding.currentNum3.text = it.toString()
-                4 -> binding.currentNum4.text = it.toString()
-                5 -> binding.currentNum5.text = it.toString()
-                6 -> binding.currentNum6.text = it.toString()
-                7 -> binding.currentNum7.text = it.toString()
-            }
-        }
+        binding.currentNum0.text = winnerhistory[0].toString()
+        binding.currentNum1.text = winnerhistory[1].toString()
+        binding.currentNum2.text = winnerhistory[2].toString()
+        binding.currentNum3.text = winnerhistory[3].toString()
+        binding.currentNum4.text = winnerhistory[4].toString()
+        binding.currentNum5.text = winnerhistory[5].toString()
+        binding.currentNum6.text = winnerhistory[6].toString()
+        binding.currentNum7.text = winnerhistory[7].toString()
+
     }
 }

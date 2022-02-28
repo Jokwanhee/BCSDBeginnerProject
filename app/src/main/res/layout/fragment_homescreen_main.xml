@@ -251,6 +251,7 @@
             android:layout_height="wrap_content"
             android:text="지난 내역"
             android:textSize="25dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/today_lottery_balls" />
 
