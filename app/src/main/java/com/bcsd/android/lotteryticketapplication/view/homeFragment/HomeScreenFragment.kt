@@ -1,6 +1,8 @@
 package com.bcsd.android.lotteryticketapplication.view.view.homeFragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +49,6 @@ class HomeScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         getTodayWinningNumber()
         getPastWinningNumber()
         getAllCurrentUserNumber()
@@ -57,6 +58,13 @@ class HomeScreenFragment : Fragment() {
             homeScreenViewModel.setCurrentUserLotteryNumbers(it)
         }
         mainViewModel.date.observe(viewLifecycleOwner, currentDateObserver)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.editText.setText("")
+        homeScreenViewModel.pastAllUserLotteryNumbers.postValue("")
+        homeScreenViewModel.updatePastWinningNumbers(mutableListOf())
     }
 
     // 오늘의 당첨 번호
@@ -83,7 +91,7 @@ class HomeScreenFragment : Fragment() {
     private fun getPastWinningNumber() {
         binding.pastVisibleButton.setOnClickListener {
             var editTextDate = binding.editText.text.toString()
-            homeScreenViewModel.findPastLotteryNumbers(editTextDate, activity)
+            homeScreenViewModel.findPastLotteryNumbers(editTextDate, context)
             val pastDateObserver = Observer<String> {
                 binding.pastDate.text = it
             }
@@ -138,7 +146,6 @@ class HomeScreenFragment : Fragment() {
     // 모든 회원들의 로또 번호
     private fun getAllCurrentUserNumber() {
         val allUserNumberObserver = Observer<String> {
-            Log.d("testing","all : $it")
             var allusernumberlist = mainViewModel.createTwoDimensionalList(it)
             val winningNumbers = Observer<ArrayList<Int>> {
                 checkWinningRanking(allusernumberlist, it)

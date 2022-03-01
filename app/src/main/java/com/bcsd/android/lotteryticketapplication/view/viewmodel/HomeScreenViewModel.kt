@@ -1,6 +1,7 @@
 package com.bcsd.android.lotteryticketapplication.view.viewmodel
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -43,6 +44,7 @@ class HomeScreenViewModel : ViewModel() {
     fun findPastLotteryNumbers(editTextDate: String, context: Context?) {
         databaseReference = FirebaseDatabase.getInstance().getReference("User")
         if (editTextDate == "") {
+            pastDate.postValue("")
             Toast.makeText(context, "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
         } else {
             databaseReference.addValueEventListener(object : ValueEventListener {
@@ -58,9 +60,10 @@ class HomeScreenViewModel : ViewModel() {
                         pastDate.postValue(editTextDate)
 
                         val listInt = createStringToList(masterNumber)
-
                         updatePastWinningNumbers(listInt)
                     } else {
+                        pastDate.postValue("")
+                        pastAllUserLotteryNumbers.postValue("")
                         Toast.makeText(context, "해당 날짜에 번호가 없습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
