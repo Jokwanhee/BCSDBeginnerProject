@@ -1,8 +1,8 @@
 # &#128007; BCSD Beginner 프로젝트
-**Android Studio 환경에서 Kotlin을 이용하여 로또 구매 및 확인 프로그램 제작**
-**Firebase 연동**
+**Android Studio 환경에서 Kotlin을 이용하여 로또 구매 및 확인 프로그램 제작**<br>
+**Firebase 연동**<br>
 - https://goni99developer.tistory.com/7
-**로그인 절차 기능 구현**
+**로그인 절차 기능 구현**<br>
 - https://goni99developer.tistory.com/8
 
 ## 로그인
